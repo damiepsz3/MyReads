@@ -5,18 +5,13 @@ import BookShelf from './BookShelf'
 
 class App extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
+    books: [],
     showSearchPage: true
   }
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-        console.log(books);
+        this.setState({ books })
     })
   }
 
@@ -51,7 +46,7 @@ class App extends React.Component {
             </div>
             <div className="list-books-content">
               <div>
-                <BookShelf title='Currently Reading'/>
+                <BookShelf shelf='currentlyReading' books={this.state.books} />
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <div className="bookshelf-books">

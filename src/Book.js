@@ -2,7 +2,13 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class Book extends Component {
+  static propTypes = {
+    info: PropTypes.object.isRequired
+  }
+
   render () {
+    const { info } = this.props;
+
     return (
       <div className="book">
         <div className="book-top">
