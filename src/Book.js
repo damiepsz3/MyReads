@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import ChangeCase from 'change-case'
 
 class Book extends Component {
   static propTypes = {
-    info: PropTypes.object.isRequired
+    info: PropTypes.object.isRequired,
+    options: PropTypes.array.isRequired
   }
 
   handleChange = (e) => {
@@ -15,6 +17,7 @@ class Book extends Component {
 
   render () {
     const { info } = this.props;
+    const opts = this.props.options;
     const style = {
       width: 128,
       height: 193,
@@ -26,19 +29,19 @@ class Book extends Component {
         <div className="book-top">
           <div className="book-cover" style={style}></div>
           <div className="book-shelf-changer">
-            <select onChange={this.handleChange}>
+            <select onChange={this.handleChange} value={info.shelf}>
               <option value="none" disabled>Move to...</option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
+              {opts.map((option, index) => (
+                <option key={index} value={option}>{ChangeCase.sentenceCase(option)}</option>
+              ))}
               <option value="none" >None</option>
             </select>
           </div>
         </div>
         <div className="book-title">{info.title}</div>
-      {info.authors.map((author, index) => (
-        <div key={index} className="book-authors">{author}</div>
-      ))}
+        {info.authors.map((author, index) => (
+          <div key={index} className="book-authors">{author}</div>
+        ))}
       </div>
     )
   }

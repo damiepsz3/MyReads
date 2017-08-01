@@ -25,11 +25,9 @@ class App extends React.Component {
     BooksAPI.update(book, shelf).then((resp) => {
       this.setState((prevState) => {
          { books: prevState.books.map((b) => {
-             if(b.id === book.id) {
-               return (b.shelf = shelf)
-             } else {
-               return b;
-             }
+             if(b.id === book.id)
+              (b.shelf = shelf);
+             return b;
            }) }
       })
     })
@@ -68,7 +66,7 @@ class App extends React.Component {
 
                 {this.state.categorys.map((cat, index) => (
                   <div key={index}>
-                    <BookShelf shelf={cat} books={this.state.books} onChangeShelf={this.onChangeShelf}/>
+                    <BookShelf shelfTitle={cat} shelfs={this.state.categorys} books={this.state.books} onChangeShelf={this.onChangeShelf}/>
                   </div>
                 ))}
             </div>
