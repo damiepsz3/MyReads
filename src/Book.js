@@ -6,6 +6,13 @@ class Book extends Component {
     info: PropTypes.object.isRequired
   }
 
+  handleChange = (e) => {
+    e.preventDefault();
+    if(this.props.onChangeShelf){
+      this.props.onChangeShelf(this.props.info, e.target.value)
+    }
+  }
+
   render () {
     const { info } = this.props;
     const style = {
@@ -19,12 +26,12 @@ class Book extends Component {
         <div className="book-top">
           <div className="book-cover" style={style}></div>
           <div className="book-shelf-changer">
-            <select>
+            <select onChange={this.handleChange}>
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
-              <option value="none">None</option>
+              <option value="none" >None</option>
             </select>
           </div>
         </div>

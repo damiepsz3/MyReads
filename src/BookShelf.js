@@ -10,9 +10,10 @@ class BookShelf extends Component {
 
   render () {
     const shelf = this.props.shelf;
-    const { books } = this.props;
+    const { books, onChangeShelf } = this.props;
 
     let categoryBooks;
+
     categoryBooks = books.filter((b) =>  b.shelf === shelf )
 
     return (
@@ -22,7 +23,7 @@ class BookShelf extends Component {
             <ol className="books-grid">
               {categoryBooks.map((book) => (
                 <li key={book.id}>
-                  <Book info={book} />
+                  <Book info={book} onChangeShelf={onChangeShelf}/>
                 </li>
               ))}
             </ol>
