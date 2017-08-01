@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import ChangeCase from 'change-case'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ChangeCase from 'change-case';
 
 class Book extends Component {
   static propTypes = {

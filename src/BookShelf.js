@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Book from './Book'
-import ChangeCase from 'change-case'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Book from './Book';
+import ChangeCase from 'change-case';
 
 class BookShelf extends Component {
   static propTypes = {
@@ -16,7 +16,6 @@ class BookShelf extends Component {
     const { books, onChangeShelf } = this.props;
 
     let categoryBooks;
-
     categoryBooks = books.filter((b) =>  b.shelf === shelfTitle )
 
     return (
