@@ -34,7 +34,6 @@ class Book extends Component {
               {opts.map((option, index) => (
                 <option key={index} value={option}>{ChangeCase.sentenceCase(option)}</option>
               ))}
-              <option value="none" >None</option>
             </select>
           </div>
         </div>
