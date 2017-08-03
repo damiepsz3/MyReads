@@ -5,7 +5,9 @@ import ChangeCase from 'change-case';
 class Book extends Component {
   static propTypes = {
     info: PropTypes.object.isRequired,
-    options: PropTypes.array.isRequired
+    options: PropTypes.array.isRequired,
+    onChangeShelf: PropTypes.func.isRequired,
+
   }
 
   handleChange = (e) => {
@@ -16,8 +18,8 @@ class Book extends Component {
   }
 
   render () {
-    const { info } = this.props;
-    const opts = this.props.options;
+    const { info, options } = this.props;
+    const authors = info.authors || [];
     const style = {
       width: 128,
       height: 193,
@@ -31,14 +33,15 @@ class Book extends Component {
           <div className="book-shelf-changer">
             <select onChange={this.handleChange} value={info.shelf}>
               <option value="none" disabled>Move to...</option>
-              {opts.map((option, index) => (
+              {options.map((option, index) => (
                 <option key={index} value={option}>{ChangeCase.sentenceCase(option)}</option>
               ))}
+              <option value="none">None</option>
             </select>
           </div>
         </div>
         <div className="book-title">{info.title}</div>
-        {info.authors.map((author, index) => (
+        {authors.map((author, index) => (
           <div key={index} className="book-authors">{author}</div>
         ))}
       </div>

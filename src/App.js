@@ -8,7 +8,9 @@ import SearchBook from './SearchBook';
 class App extends React.Component {
   state = {
     books: [],
-    shelfs: []
+    searchBooks: [],
+    shelfs: [],
+    query: ''
   }
 
   componentDidMount() {
@@ -22,23 +24,56 @@ class App extends React.Component {
     })
   }
 
-  onChangeShelf = (book, shelf) => {
+  onMoveShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((resp) => {
-      this.setState({ books: this.state.books.map((b) =>
-        {
-             if(b.id === book.id)
-              (b.shelf = shelf);
-             return b;
-        })
+      this.setState(state => (
+          { books: state.books.map((b) => {
+                 if(b.id === book.id)
+                  (b.shelf = shelf);
+                  return b;
+                })
+          }
+      ));
+    });
+  }
+
+  updateBooks = (query) => {
+    this.setState({ query:  query })
+      BooksAPI.search(this.state.query, 5)
+      .then((searchBooks) => {if(searchBooks !== undefined)
+        console.log(searchBooks);
+        if(!searchBooks.error) {
+          this.setState({ searchBooks });
+        } else {
+          this.setState({ searchBooks: [] });
+        }
       })
-    })
+      .catch((error) => {
+        console.log('Something went wrong')
+        this.setState({ searchBooks: [] });
+      })
+  }
+
+  addABook = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((resp) => {
+      this.setState(state => {
+        book.shelf = shelf;
+        return { books: state.books.concat([book]) }
+      })
+    });
   }
 
   render() {
+    const { shelfs, books, searchBooks, query } = this.state;
     return (
       <div className="app">
           <Route exact path="/search" render={( {history} ) => (
-            <SearchBook />
+            <SearchBook
+              query={query}
+              onUpdate={this.updateBooks}
+              onChangeShelf={this.addABook}
+              shelfs={shelfs}
+              searchBooks={searchBooks}/>
          )}/>
 
 
@@ -48,10 +83,13 @@ class App extends React.Component {
                 <h1>MyReads</h1>
               </div>
               <div className="list-books-content">
-
-                  {this.state.shelfs.map((cat, index) => (
+                  {shelfs.map((cat, index) => (
                     <div key={index}>
-                      <BookShelf shelfTitle={cat} shelfs={this.state.shelfs} books={this.state.books} onChangeShelf={this.onChangeShelf}/>
+                      <BookShelf
+                        shelfTitle={cat}
+                        shelfs={shelfs}
+                        books={books}
+                        onChangeShelf={this.onMoveShelf}/>
                     </div>
                   ))}
               </div>
