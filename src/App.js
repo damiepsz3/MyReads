@@ -41,7 +41,6 @@ class App extends React.Component {
     this.setState({ query:  query })
       BooksAPI.search(this.state.query, 5)
       .then((searchBooks) => {if(searchBooks !== undefined)
-        console.log(searchBooks);
         if(!searchBooks.error) {
           this.setState({ searchBooks });
         } else {
