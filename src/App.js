@@ -15,7 +15,7 @@ class App extends React.Component {
 
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
-        let shelfs = new Set();
+        const shelfs = new Set();
         books.map((book) => (
           shelfs.add(book.shelf)
         ))

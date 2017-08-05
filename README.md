@@ -3,7 +3,7 @@ Final project for Udacity React Nanodegree.
 Basically, a personal library where you can search and order your books in shelfs.
 ## Installation
 1. Clone the project: `git clone https://github.com/damiepsz3/MyReads.git`
-2. In the project directory run: ### `npm install`
+2. In the project directory run: `npm install`
 ## Usage
 In the project directory, you can run:
 
