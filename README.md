@@ -15,7 +15,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 ## History
-Version 1.0.0 - `git checkout ver-1.0.0`
+Version 1.0.0 - `git checkout ver-1.0.0`<br>
 Version 1.0.1 - `git checkout master`
 
 You can see the changes and updates through the commits.
