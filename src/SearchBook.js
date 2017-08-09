@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Book from './Book';
+import escapeRegExp from 'escape-string-regexp';
 
 class SearchBook extends Component {
 
@@ -21,7 +22,13 @@ class SearchBook extends Component {
   render() {
     const { books, onChangeShelf, query } = this.props;
 
-    cons showingContacts =
+    let showingBooks;
+    if(query) {
+      const match = new RegExp(escapeRegExp(query), 'i');
+      showingBooks = books.filter(b => match.test(b.title) || match.test(b.authors))
+    } else {
+      showingBooks = [];
+    }
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -40,11 +47,11 @@ class SearchBook extends Component {
         <div className="search-books-results">
           {query.length > 0 && (
             <div className="showing-results">
-              <span>We found {books.length} results from '{query}'</span>
+              <span>We found {showingBooks.length} results from '{query}'</span>
             </div>
           )}
           <ol className="books-grid">
-            {books.map((book) => (
+            {showingBooks.map((book) => (
               <li key={book.id}>
                 <Book
                   info={book}

@@ -1,56 +1,50 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Route, Link } from 'react-router-dom';
 import * as BooksAPI from './BooksAPI';
 import './App.css';
 import Shelf from './Shelf';
 import SearchBook from './SearchBook';
 
-class App extends React.Component {
+class App extends Component {
   state = {
     books: [],
     query: ''
   }
 
   componentDidMount() {
-    BooksAPI.getAll().then((results) => {
-      const books = new Set();
-      results.forEach((book) => books.add(book));
-      this.setState({ books: Array.from(books) })
+    BooksAPI.getAll().then((books) => {
+      this.setState({ books });
     })
   }
 
 
 
   onMoveShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf).then((resp) => {
-      this.setState(state => (
-        { books: state.books.map((b) => {
+      BooksAPI.update(book, shelf).then((resp) => {})
+      this.setState(prevState => (
+        { books: prevState.books.map((b) => {
           if(b.id === book.id)
           (b.shelf = shelf);
           return b;
         })
       }
     ));
-  })
-}
+  }
 
 
-updateBooks = (query) => {
-  this.setState({ query:  query })
-  BooksAPI.search(this.state.query, 20)
-  .then((searchResults) => {
-    this.setState({ books: this.state.books.concat(searchResults) })
-  })
-}
-
-addABook = (book, shelf) => {
-  BooksAPI.update(book, shelf).then((resp) => {
-    this.setState(state => {
-      book.shelf = shelf;
-      return { books: state.books.concat([book]) }
+  updateBooks = (query) => {
+    this.setState({ query:  query })
+    BooksAPI.search(this.state.query, 20)
+    .then((searchResults) => {
+      if(searchResults !== undefined && !searchResults.error){
+        this.setState(prevState => {
+          const bookIds = prevState.books.map(b => b.id);
+          return { books: prevState.books.concat(searchResults.filter( result => !bookIds.includes(result.id))) }
+        })
+      }
     })
-  });
-}
+  }
+
 
 
 
@@ -63,7 +57,7 @@ render() {
         <SearchBook
           query={query}
           onUpdate={this.updateBooks}
-          onChangeShelf={this.addABook}
+          onChangeShelf={this.onMoveShelf}
           books={books}/>
         )} />
 

@@ -17,7 +17,7 @@ class Book extends Component {
 
   render () {
     const { info } = this.props;
-    const shelf = info.shelf;
+    const shelf = info.shelf || 'none';
     const authors = info.authors || [];
     const style = {
       width: 128,
@@ -31,7 +31,7 @@ class Book extends Component {
           <div className="book-cover" style={style}></div>
           <div className="book-shelf-changer">
             <select onChange={this.handleChange} value={shelf}>
-              <option value="none" disabled>Move to...</option>
+              <option disabled>Move to...</option>
               <option value="currentlyReading">{ChangeCase.sentenceCase('currentlyReading')}</option>
               <option value="wantToRead">{ChangeCase.sentenceCase('wantToRead')}</option>
               <option value="read">{ChangeCase.sentenceCase('read')}</option>
