@@ -8,8 +8,7 @@ class SearchBook extends Component {
   static propTypes = {
     onChangeShelf: PropTypes.func.isRequired,
     onUpdate: PropTypes.func.isRequired,
-    shelfs: PropTypes.array.isRequired,
-    searchBooks: PropTypes.array.isRequired,
+    books: PropTypes.array.isRequired,
     query: PropTypes.string.isRequired
   }
 
@@ -20,8 +19,9 @@ class SearchBook extends Component {
   }
 
   render() {
-    const { shelfs, searchBooks, onChangeShelf, query } = this.props;
+    const { books, onChangeShelf, query } = this.props;
 
+    cons showingContacts =
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -40,16 +40,16 @@ class SearchBook extends Component {
         <div className="search-books-results">
           {query.length > 0 && (
             <div className="showing-results">
-              <span>We found {searchBooks.length} results from '{query}'</span>
+              <span>We found {books.length} results from '{query}'</span>
             </div>
           )}
           <ol className="books-grid">
-            {searchBooks.map((book) => (
+            {books.map((book) => (
               <li key={book.id}>
                 <Book
                   info={book}
                   onChangeShelf={onChangeShelf}
-                  options={shelfs}/>
+                />
               </li>
             ))}
           </ol>
