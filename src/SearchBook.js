@@ -2,33 +2,44 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Book from './Book';
-import escapeRegExp from 'escape-string-regexp';
+import * as BooksAPI from './BooksAPI';
 
 class SearchBook extends Component {
-
   static propTypes = {
     onChangeShelf: PropTypes.func.isRequired,
-    onUpdate: PropTypes.func.isRequired,
-    books: PropTypes.array.isRequired,
-    query: PropTypes.string.isRequired
+    books: PropTypes.array.isRequired
   }
 
-  updateQuery = (e) => {
-    if(this.props.onUpdate){
-      this.props.onUpdate(e.target.value);
-    }
+  state = {
+      results: [],
+      query: ''
+  }
+
+  updateBooks = (query) => {
+    this.setState({ query })
+    BooksAPI.search(query, 20)
+    .then((results) => {
+      if(results && !results.error){
+        this.setState({ results } )
+
+      } else {
+        this.setState({ results: [] });
+      }
+    })
   }
 
   render() {
-    const { books, onChangeShelf, query } = this.props;
+    const { books, onChangeShelf } = this.props;
+    const { query, results } = this.state;
 
-    let showingBooks;
-    if(query) {
-      const match = new RegExp(escapeRegExp(query), 'i');
-      showingBooks = books.filter(b => match.test(b.title) || match.test(b.authors))
-    } else {
-      showingBooks = [];
-    }
+    const tempResults = results.map(r => {
+      books.forEach(b => {
+        if(b.id === r.id)
+        r.shelf = b.shelf;
+      })
+      return r;
+    })
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -40,18 +51,18 @@ class SearchBook extends Component {
               type="text"
               placeholder="Search by title or author"
               value={query}
-              onInput={this.updateQuery}
+              onInput={(e) => this.updateBooks(e.target.value)}
             />
           </div>
         </div>
         <div className="search-books-results">
           {query.length > 0 && (
             <div className="showing-results">
-              <span>We found {showingBooks.length} results from '{query}'</span>
+              <span>We found {tempResults.length} results from '{query}'</span>
             </div>
           )}
           <ol className="books-grid">
-            {showingBooks.map((book) => (
+            {tempResults.map((book) => (
               <li key={book.id}>
                 <Book
                   info={book}

@@ -7,8 +7,7 @@ import SearchBook from './SearchBook';
 
 class App extends Component {
   state = {
-    books: [],
-    query: ''
+    books: []
   }
 
   componentDidMount() {
@@ -17,46 +16,18 @@ class App extends Component {
     })
   }
 
-
-
   onMoveShelf = (book, shelf) => {
-      BooksAPI.update(book, shelf).then((resp) => {})
-      this.setState(prevState => (
-        { books: prevState.books.map((b) => {
-          if(b.id === book.id)
-          (b.shelf = shelf);
-          return b;
-        })
-      }
-    ));
+      BooksAPI.update(book, shelf).then((resp) => {});
+      book.shelf = shelf;
+      this.setState(prevState => ({ books: prevState.books.filter(b => b.id !== book.id).concat(book)}));
   }
-
-
-  updateBooks = (query) => {
-    this.setState({ query:  query })
-    BooksAPI.search(this.state.query, 20)
-    .then((searchResults) => {
-      if(searchResults !== undefined && !searchResults.error){
-        this.setState(prevState => {
-          const bookIds = prevState.books.map(b => b.id);
-          return { books: prevState.books.concat(searchResults.filter( result => !bookIds.includes(result.id))) }
-        })
-      }
-    })
-  }
-
-
-
-
 
 render() {
-  const { books, query } = this.state;
+  const { books } = this.state;
   return (
     <div className="app">
       <Route exact path="/search" render={( {history} ) => (
         <SearchBook
-          query={query}
-          onUpdate={this.updateBooks}
           onChangeShelf={this.onMoveShelf}
           books={books}/>
         )} />

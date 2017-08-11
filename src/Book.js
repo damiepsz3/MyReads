@@ -18,11 +18,12 @@ class Book extends Component {
   render () {
     const { info } = this.props;
     const shelf = info.shelf || 'none';
+    const image = (info.imageLinks ? info.imageLinks.thumbnail : '');
     const authors = info.authors || [];
     const style = {
       width: 128,
       height: 193,
-      backgroundImage: `url(${info.imageLinks.thumbnail})`
+      backgroundImage: `url(${image})`
     }
 
     return (
