@@ -19,13 +19,9 @@ class SearchBook extends Component {
     this.setState({ query })
     BooksAPI.search(query, 20)
     .then((results) => {
-      if(results && !results.error){
-        this.setState({ results } )
-
-      } else {
-        this.setState({ results: [] });
-      }
+        this.setState({ results: (results && !results.error ? results : []) } )
     })
+    .then((message) => console.log(`There was an error, message: ${message}`))
   }
 
   render() {
