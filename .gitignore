@@ -16,6 +16,9 @@
 .env.test.local
 .env.production.local
 
+#github Page
+_site/
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
